@@ -1,5 +1,5 @@
-const CACHE = 'tcg-turno-shell-v18';
-const SHELL = ['./', './index.html', './styles.css', './theme.js', './app.mjs', './state.mjs', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
+const CACHE = 'tcg-turno-shell-v19';
+const SHELL = ['./', './index.html', './styles.css?v=4e3eae7', './theme.js', './app.mjs', './state.mjs', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => {
   const resources = SHELL.map(path => new Request(new URL(path, self.registration.scope), { cache: 'reload' }));
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(resources)).then(() => self.skipWaiting()));
