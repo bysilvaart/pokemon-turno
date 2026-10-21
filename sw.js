@@ -1,7 +1,8 @@
-const CACHE = 'tcg-turno-shell-v17';
+const CACHE = 'tcg-turno-shell-v18';
 const SHELL = ['./', './index.html', './styles.css', './theme.js', './app.mjs', './state.mjs', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
+  const resources = SHELL.map(path => new Request(new URL(path, self.registration.scope), { cache: 'reload' }));
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(resources)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('tcg-turno-shell-') && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim()));
@@ -11,7 +12,7 @@ self.addEventListener('fetch', event => {
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
     try {
-      const response = await fetch(event.request);
+      const response = await fetch(event.request, { cache: 'no-cache' });
       if (response.ok) {
         // Extend event lifetime so an offline reload never races an unfinished write.
         event.waitUntil(cache.put(event.request, response.clone()).catch(() => {}));
