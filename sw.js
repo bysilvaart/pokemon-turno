@@ -1,4 +1,4 @@
-const CACHE = 'tcg-turno-shell-v16';
+const CACHE = 'tcg-turno-shell-v17';
 const SHELL = ['./', './index.html', './styles.css', './theme.js', './app.mjs', './state.mjs', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
