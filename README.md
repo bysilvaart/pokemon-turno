@@ -1,5 +1,7 @@
 # Pokémon Turno
 
+**[Abrir Pokémon Turno](https://bysilvaart.github.io/pokemon-turno)**
+
 Una app mobile first para recordar las acciones usadas en Pokémon TCG.
 
 - Estadio, partidario y energía del turno.
