@@ -1,0 +1,201 @@
+@charset "UTF-8";
+:root {
+  color-scheme: light;
+  --bg: #f3f5fb; --surface: #ffffff; --soft: #e9eef8; --text: #19233b; --muted: #57647c;
+  --border: #d9e0ef; --control-border: #75839d; --accent: #2254c5; --accent-hover: #1944a7; --on-accent: #ffffff;
+  --used-bg: #e0f5e9; --used-border: #397f5b; --used-text: #1c6645; --focus: #2254c5;
+  --success: #197b50; --on-success: #ffffff;
+  --brand-yellow: #ffcf54; --brand-blue: #2858c1; --brand-red: #c63e58;
+  --stadium-bg: #f0eaff; --stadium-fg: #6741aa; --supporter-bg: #e8f1ff; --supporter-fg: #245ca7;
+  --energy-bg: #fff0d3; --energy-fg: #86580d; --card-frame: #7b89a4;
+  --stadium-selected-start: #7548b8; --stadium-selected-end: #57328e; --stadium-selected-fg: #ffffff; --stadium-selected-tag: #4c2a80;
+  --supporter-selected-start: #2867b9; --supporter-selected-end: #1e4d92; --supporter-selected-fg: #ffffff; --supporter-selected-tag: #163e79;
+  --energy-selected-start: #f4c66b; --energy-selected-end: #e9ad41; --energy-selected-fg: #493007; --energy-selected-tag: #6b4500;
+  --button-start: #2864de; --button-end: #2c48b9; --on-button: #ffffff;
+  --ambient-blue: #dfe9ff; --ambient-violet: #ede5ff; --ambient-gold: #fff1d6;
+  --surface-glass: #ffffffb8; --edge-light: #ffffffed; --shadow-ink: #253970;
+  --shadow: 0 3px 7px #25397006, 0 14px 30px #25397009;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d1220; --surface: #1b2438; --soft: #242f47; --text: #eff3ff; --muted: #b0bbd2;
+  --border: #35425e; --control-border: #7e90b0; --accent: #a9c3ff; --accent-hover: #c3d5ff; --on-accent: #152748;
+  --used-bg: #1c3d30; --used-border: #6db48d; --used-text: #b4efcf; --focus: #b6ceff;
+  --success: #77e2af; --on-success: #0d2d20;
+  --brand-yellow: #ffcf54; --brand-blue: #bbceff; --brand-red: #ffa7b6;
+  --stadium-bg: #332648; --stadium-fg: #d5b5ff; --supporter-bg: #203655; --supporter-fg: #b1d2ff;
+  --energy-bg: #3e3320; --energy-fg: #ffdb88; --card-frame: #798db1;
+  --stadium-selected-start: #d0b2ff; --stadium-selected-end: #b28be9; --stadium-selected-fg: #2f1753; --stadium-selected-tag: #593184;
+  --supporter-selected-start: #9fcbff; --supporter-selected-end: #78b3f1; --supporter-selected-fg: #102f55; --supporter-selected-tag: #255990;
+  --energy-selected-start: #ffdc8e; --energy-selected-end: #efbe61; --energy-selected-fg: #493007; --energy-selected-tag: #6b4500;
+  --button-start: #315fc4; --button-end: #394ab1; --on-button: #ffffff;
+  --ambient-blue: #122449; --ambient-violet: #231d3b; --ambient-gold: #211d2a;
+  --surface-glass: #182237b8; --edge-light: #b1caff24; --shadow-ink: #000000;
+  --shadow: 0 3px 8px #00000016, 0 16px 28px #00000020;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 280px; background: var(--bg); color: var(--text); }
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse at 90% 5%, var(--ambient-blue), transparent 48%), radial-gradient(ellipse at 0% 52%, var(--ambient-violet), transparent 48%), radial-gradient(ellipse at 75% 100%, var(--ambient-gold), transparent 42%);
+}
+button, input { font: inherit; }
+button { color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; }
+button, a { outline-offset: 5px; }
+:focus-visible { outline: 3px solid var(--focus); }
+[hidden] { display: none !important; }
+.svg-library, .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.skip-link { position: fixed; z-index: 100; top: -80px; left: 16px; padding: 14px; border-radius: 12px; background: var(--text); color: var(--bg); }
+.skip-link:focus { top: 12px; }
+.app-shell {
+  position: relative; z-index: 1; display: grid; grid-template-rows: auto 1fr auto;
+  min-height: 100vh; min-height: 100dvh; width: min(100%, 480px); margin-inline: auto;
+  padding: max(24px, env(safe-area-inset-top)) 22px max(20px, env(safe-area-inset-bottom));
+}
+.app-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand-mark {
+  display: grid; place-items: center; width: 46px; height: 46px; border-radius: 16px;
+  color: var(--brand-yellow); background: linear-gradient(145deg, #376fe7, #263f9e);
+  border: 1px solid #8aa9ed; box-shadow: inset 0 1px 1px #ffffff60, inset 0 -3px 5px #142c6b40, 0 6px 12px #2858c120;
+  transform: rotate(-7deg);
+}
+.brand-mark .icon { width: 34px; height: 34px; stroke-width: 1.8; transform: rotate(7deg); }
+.brand-name { display: block; color: var(--text); font-size: 30px; font-weight: 760; letter-spacing: -1.8px; line-height: 1; }
+.brand-dot { color: var(--brand-blue); }
+.brand-description { display: block; font-size: 9px; line-height: 1; font-weight: 650; letter-spacing: 1.6px; color: var(--muted); margin-top: 7px; }
+.icon-button {
+  display: inline-grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0;
+  padding: 10px; border: 1px solid var(--border); border-radius: 50%;
+  background: var(--surface-glass); color: var(--text); box-shadow: inset 0 1px 0 var(--edge-light), 0 4px 10px #25397006;
+  transition: transform .2s ease, background-color .2s ease, border-color .2s ease;
+}
+.icon-button .icon { width: 20px; height: 20px; }
+.header-tools { display: flex; }
+#main { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding-block: 32px; }
+.play-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 34px; }
+.section-heading { margin-bottom: 16px; text-align: center; }
+h2 { margin: 0; color: var(--muted); font-size: 11px; font-weight: 700; line-height: 1.4; letter-spacing: 1.7px; text-transform: uppercase; }
+.action-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.marker { border: 1px solid var(--control-border); background: var(--surface); box-shadow: var(--shadow); }
+.action-marker {
+  position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px; width: 100%; min-width: 0; min-height: 146px;
+  padding: 20px 7px 16px; border-radius: 24px; text-align: center;
+  background: linear-gradient(155deg, var(--surface) 18%, var(--action-tint));
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, border-color .22s ease;
+}
+.action-marker::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; box-shadow: inset 0 1px 1px var(--edge-light); }
+.action-marker::after {
+  content: ""; position: absolute; z-index: -1; width: 110px; height: 90px; right: -30px; top: -57px; border-radius: 50%;
+  background: radial-gradient(ellipse, var(--action-tint), transparent 70%); pointer-events: none;
+}
+.action-marker[data-marker="stadium"] { --action-tint: var(--stadium-bg); --action-ink: var(--stadium-fg); --badge-rotation: -7deg;  --action-used-start: var(--stadium-selected-start); --action-used-end: var(--stadium-selected-end); --action-used-fg: var(--stadium-selected-fg); --action-used-icon: var(--stadium-selected-tag); --action-used-border: var(--stadium-selected-end); }
+.action-marker[data-marker="supporter"] { --action-tint: var(--supporter-bg); --action-ink: var(--supporter-fg); --badge-rotation: 5deg;  --action-used-start: var(--supporter-selected-start); --action-used-end: var(--supporter-selected-end); --action-used-fg: var(--supporter-selected-fg); --action-used-icon: var(--supporter-selected-tag); --action-used-border: var(--supporter-selected-end); }
+.action-marker[data-marker="energy"] { --action-tint: var(--energy-bg); --action-ink: var(--energy-fg); --badge-rotation: -5deg;  --action-used-start: var(--energy-selected-start); --action-used-end: var(--energy-selected-end); --action-used-fg: var(--energy-selected-fg); --action-used-icon: var(--energy-selected-tag); --action-used-border: var(--energy-selected-end); }
+.action-icon {
+  position: relative; display: grid; place-items: center; width: 46px; height: 46px; flex-shrink: 0; border-radius: 16px;
+  color: var(--action-ink); background: linear-gradient(145deg, var(--surface), var(--action-tint));
+  border: 1px solid var(--edge-light); box-shadow: inset 0 1px 2px var(--edge-light), inset 0 -3px 5px #25397009, 0 6px 11px #25397010;
+  transform: rotate(var(--badge-rotation)); transition: transform .25s cubic-bezier(.2,.8,.2,1), background-color .2s ease;
+}
+.action-icon .icon { width: 25px; height: 25px; stroke-width: 1.8; transform: rotate(calc(-1 * var(--badge-rotation))); filter: drop-shadow(0 1px 1px #0000000a); }
+.action-copy { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.marker-title { font-size: 13px; font-weight: 680; letter-spacing: -.3px; line-height: 1.25; }
+.marker-end { min-height: 20px; display: flex; align-items: center; justify-content: center; }
+.marker-status { color: var(--muted); font-size: 10px; font-weight: 550; }
+.action-marker .marker-status { padding: 4px 6px; line-height: 1.2; border-radius: 50px; background: var(--surface); }
+.action-marker .check-circle {
+  position: absolute; top: 9px; right: 9px; display: grid; place-items: center; width: 17px; height: 17px; border-radius: 50%;
+  opacity: 0; transform: scale(.5); background: var(--action-used-fg); color: var(--action-used-end);
+  transition: opacity .2s ease, transform .25s cubic-bezier(.2,1.6,.4,1);
+}
+.action-marker .check-circle .icon { width: 11px; height: 11px; stroke-width: 2.6; }
+.action-marker[aria-pressed="true"] {
+  color: var(--action-used-fg); border-color: var(--action-used-border);
+  background: linear-gradient(145deg, var(--action-used-start), var(--action-used-end));
+  box-shadow: inset 0 1px 0 #ffffff40, 0 5px 10px #25397012, 0 12px 22px #25397020;
+}
+.action-marker[aria-pressed="true"]::after { opacity: 0; }
+.action-marker[aria-pressed="true"] .action-icon { color: #ffffff; background: var(--action-used-icon); border-color: #ffffff30; box-shadow: inset 0 1px 1px #ffffff25, 0 4px 8px #05342120; transform: rotate(0); }
+.action-marker[aria-pressed="true"] .action-icon .icon { transform: rotate(0); }
+.action-marker[aria-pressed="true"] .marker-status { color: #ffffff; background: var(--action-used-icon); }
+.action-marker[aria-pressed="true"] .check-circle { opacity: 1; transform: scale(1); }
+.pokemon-section { position: relative; }
+.pokemon-section > .section-heading { margin-bottom: 14px; }
+.active-grid, .bench-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.pokemon-card {
+  position: relative; isolation: isolate; display: flex; flex-direction: column; aspect-ratio: 63 / 88; min-width: 44px; min-height: 84px;
+  padding: 7px 5px; gap: 4px; border: 1px solid var(--card-frame); border-radius: 11px;
+  background: linear-gradient(150deg, var(--surface), var(--soft)); text-align: left;
+  box-shadow: inset 0 1px 0 var(--edge-light), 0 3px 5px #25397006, 0 9px 16px #2539700d;
+  transition: transform .2s cubic-bezier(.2,.8,.2,1), border-color .2s ease, box-shadow .2s ease;
+}
+.pokemon-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: linear-gradient(120deg, #ffffff0d, transparent 50%); }
+.active-marker { grid-column: 3; width: 100%; }
+.card-header { display: flex; align-items: center; justify-content: space-between; width: 100%; min-width: 0; gap: 2px; }
+.pokemon-card .card-header { justify-content: center; }
+.active-marker .marker-title, .bench-number { font-size: 10px; font-weight: 650; line-height: 1.25; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.card-art { display: grid; flex: 1; place-items: center; min-height: 20px; width: 100%; color: var(--control-border); }
+.card-art .icon { width: 60%; height: auto; aspect-ratio: 1; stroke-width: 1.4; transition: transform .22s cubic-bezier(.2,1.3,.4,1); }
+.pokemon-card[aria-pressed="true"] { border-color: var(--used-border); color: var(--used-text); background: var(--used-bg); box-shadow: inset 0 1px 0 #ffffff20, 0 3px 8px #1271470d; }
+.pokemon-card[aria-pressed="true"] .card-art { color: var(--used-text); }
+.bench-heading { display: flex; justify-content: center; margin: 17px 0 11px; }
+h3 { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .5px; margin: 0; }
+.storage-warning { margin-top: 20px; padding: 12px; border: 1px solid var(--control-border); border-radius: 14px; background: var(--surface); font-size: 12px; line-height: 1.6; }
+.bottom-dock { padding-top: 12px; width: 100%; }
+.dock-inner { width: 100%; margin-inline: auto; }
+.primary-button {
+  position: relative; isolation: isolate; display: grid; grid-template-columns: 32px 1fr 32px; align-items: center; gap: 8px;
+  width: 100%; min-height: 58px; padding: 10px 13px; border: 1px solid #587be0; border-radius: 50px;
+  background: linear-gradient(135deg, var(--button-start), var(--button-end)); color: var(--on-button);
+  font-size: 14px; font-weight: 600; letter-spacing: -.15px;
+  box-shadow: inset 0 1px 0 #ffffff50, inset 0 -2px 0 #0c28732e, 0 7px 16px #2858c126;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.primary-button > span:last-child { grid-column: 2; }
+.button-orbit { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 50%; background: #ffffff; color: #2858c1; box-shadow: 0 2px 5px #0c287326; }
+.button-orbit .icon { width: 17px; height: 17px; }
+.noscript { position: fixed; z-index: 100; inset: 20px 20px auto; padding: 20px; background: var(--surface); border: 2px solid var(--accent); border-radius: 16px; }
+@media (hover: hover) and (pointer: fine) {
+  .action-marker:hover { transform: translateY(-4px); border-color: var(--action-ink); box-shadow: inset 0 1px 0 var(--edge-light), 0 8px 12px #25397008, 0 16px 28px #25397015; }
+  .action-marker:hover .action-icon { transform: rotate(0) translateY(-2px); }
+  .action-marker:hover .action-icon .icon { transform: rotate(0); }
+  .action-marker[aria-pressed="true"]:hover { border-color: var(--action-used-fg); }
+  .pokemon-card:hover { transform: translateY(-3px); border-color: var(--brand-blue); box-shadow: 0 9px 16px #2539701c; }
+  .pokemon-card[aria-pressed="true"]:hover { border-color: var(--used-border); }
+  .icon-button:hover { transform: rotate(10deg); border-color: var(--control-border); background: var(--surface); }
+  .primary-button:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #ffffff50, 0 10px 24px #2858c140; }
+}
+.action-marker:active:not(:disabled), .pokemon-card:active:not(:disabled), .primary-button:active:not(:disabled), .icon-button:active:not(:disabled) { transform: scale(.96); }
+@media (max-width: 359px) {
+  .app-shell { padding-inline: 14px; }
+  .action-list { gap: 7px; }
+  .action-marker { border-radius: 20px; padding-inline: 5px; }
+  .marker-title { font-size: 12px; }
+  .active-grid, .bench-grid { gap: 5px; }
+  .pokemon-card { padding-inline: 3px; border-radius: 9px; }
+}
+@media (max-height: 700px) {
+  .app-shell { padding-top: max(16px, env(safe-area-inset-top)); padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+  #main { padding-block: 22px; }
+  .play-layout { gap: 24px; }
+  .action-marker { min-height: 132px; gap: 8px; padding-block: 16px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .action-marker:hover, .pokemon-card:hover, .primary-button:hover, .icon-button:hover,
+  .action-marker:active:not(:disabled), .pokemon-card:active:not(:disabled), .primary-button:active:not(:disabled), .icon-button:active:not(:disabled) { transform: none; }
+  .action-marker .action-icon, .action-marker .action-icon .icon { transform: none; }
+}
+@media (forced-colors: active) {
+  body::before, .action-marker::before, .action-marker::after, .pokemon-card::before { display: none; }
+  .marker, .primary-button, .icon-button { border-color: ButtonText; box-shadow: none; }
+  .marker[aria-pressed="true"] { background: Highlight; color: HighlightText; border: 2px solid Highlight; }
+  .action-marker[aria-pressed="true"] .marker-status, .action-marker[aria-pressed="true"] .action-icon { background: Highlight; color: HighlightText; }
+  .action-marker[aria-pressed="true"] .check-circle { background: HighlightText; color: Highlight; }
+  .card-art { color: ButtonText; }
+}
